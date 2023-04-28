@@ -38,6 +38,28 @@ def multivariate_OLS(X, Y):
 
 
 def anomaly_estimation(ex, times, pred_months, lat, lon, pred_idx_lon, pred_idx_lat, pred_idx):
+    """
+    This method
+
+    Parameters
+    ----------
+    ex : str
+        The example number. Options are '1', '2', or '3'.
+    times : int
+        Number of times.
+    pred_months : int
+        Number of months to forecast.
+    lat : int
+        Latitude measurements.
+    lon : int
+        Longitude measurements.
+    pred_idx_lon : list
+        Indices for longitude forecasting.
+    pred_idx_lat : list
+        Indices for latitude forecasting.
+    pred_idx : list
+        Indices for latitude forecasting in the flattened array.
+    """
     ds = nc.Dataset(f"data/temp_anomaly_ex{ex}.nc")
     print(ds)
     ta = ds["tempanomaly"][:].data
@@ -78,8 +100,9 @@ def anomaly_estimation(ex, times, pred_months, lat, lon, pred_idx_lon, pred_idx_
 
     df = pd.DataFrame(dict_)
     df.to_csv(f'VAR_pred_ex{ex}.csv')
+    df["(6, 6)"].to_csv(f'VAR_pred_66_ex{ex}.csv')
 
-    # with open(f'VAR_pred_ex{ex}.csv', 'w', encoding='UTF8', newline='') as f:
+    # with open(f'VAR_pred_66_ex{ex}.csv', 'w', encoding='UTF8', newline='') as f:
     #     writer = csv.writer(f)
     #     # write the data
-    #     writer.writerow(pred)
+    #     writer.writerow(df["(6, 6)"])
